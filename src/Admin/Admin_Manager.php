@@ -266,12 +266,8 @@ class Admin_Manager
         }
 
         // Email settings
-        if (isset($_POST['send_to_admin'])) {
-            update_option('cart_quote_wc_send_to_admin', (bool) $_POST['send_to_admin']);
-        }
-        if (isset($_POST['send_to_client'])) {
-            update_option('cart_quote_wc_send_to_client', (bool) $_POST['send_to_client']);
-        }
+        update_option('cart_quote_wc_send_to_admin', isset($_POST['send_to_admin']));
+        update_option('cart_quote_wc_send_to_client', isset($_POST['send_to_client']));
         if (isset($_POST['admin_email'])) {
             update_option('cart_quote_wc_admin_email', sanitize_email($_POST['admin_email']));
         }
@@ -446,39 +442,5 @@ class Admin_Manager
         }
     }
 
-    /**
-     * Get status label
-     *
-     * @param string $status Status
-     * @return string
-     */
-    public static function get_status_label(string $status): string
-    {
-        $labels = [
-            'pending' => __('Pending', 'cart-quote-woocommerce-email'),
-            'contacted' => __('Contacted', 'cart-quote-woocommerce-email'),
-            'closed' => __('Closed', 'cart-quote-woocommerce-email'),
-            'canceled' => __('Canceled', 'cart-quote-woocommerce-email'),
-        ];
-
-        return $labels[$status] ?? $status;
-    }
-
-    /**
-     * Get status class
-     *
-     * @param string $status Status
-     * @return string
-     */
-    public static function get_status_class(string $status): string
-    {
-        $classes = [
-            'pending' => 'status-pending',
-            'contacted' => 'status-contacted',
-            'closed' => 'status-closed',
-            'canceled' => 'status-canceled',
-        ];
-
-        return $classes[$status] ?? '';
-    }
 }
+
