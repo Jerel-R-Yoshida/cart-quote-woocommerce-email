@@ -26,6 +26,15 @@ class Activator
      */
     public function activate(): void
     {
+        // Validate critical files exist before activation
+        $validation = \CartQuoteWooCommerce\Core\Validator::validate_critical_files();
+
+        if (!$validation['valid']) {
+            // Display error and stop activation
+            echo \CartQuoteWooCommerce\Core\Validator::generate_error_message($validation['missing']);
+            die('Plugin activation failed. Please check the errors above.');
+        }
+
         $this->create_tables();
         $this->create_default_options();
         $this->schedule_cron_jobs();

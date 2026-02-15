@@ -10,11 +10,13 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 namespace CartQuoteWooCommerce\Core;
 
 /**
  * Class Plugin
- * 
+ *
  * Main plugin class that acts as a service container
  */
 final class Plugin

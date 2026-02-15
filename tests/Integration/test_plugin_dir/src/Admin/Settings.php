@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); class Settings { public static function init() {} }
