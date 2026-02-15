@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); class Google_Calendar_Service { public static function connect() {} }

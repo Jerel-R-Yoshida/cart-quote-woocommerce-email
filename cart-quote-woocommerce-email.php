@@ -171,11 +171,25 @@ function cart_quote_wc_activate() {
         );
     }
 
-    // Run activator
-    require_once CART_QUOTE_WC_PLUGIN_DIR . 'src/Core/Activator.php';
-    $activator = new \CartQuoteWooCommerce\Core\Activator();
-    $activator->activate();
-    
+    // Validate critical files exist before activation
+    if (!\CartQuoteWooCommerce\Core\Validator::validate_and_stop_if_missing()) {
+        return;
+    }
+
+    try {
+        // Run activator
+        $activator = new \CartQuoteWooCommerce\Core\Activator();
+        $activator->activate();
+    } catch (Throwable $e) {
+        // Catch any errors during activation
+        deactivate_plugins(CART_QUOTE_WC_PLUGIN_BASENAME);
+        wp_die(
+            esc_html__('Cart Quote WooCommerce & Email activation failed: ' . $e->getMessage(), 'cart-quote-woocommerce-email'),
+            'Plugin Activation Error',
+            ['back_link' => true]
+        );
+    }
+
     // Set activation flag for redirect
     set_transient('cart_quote_wc_activation_redirect', true, 30);
 }
@@ -184,9 +198,13 @@ function cart_quote_wc_activate() {
  * Plugin deactivation callback
  */
 function cart_quote_wc_deactivate() {
-    require_once CART_QUOTE_WC_PLUGIN_DIR . 'src/Core/Deactivator.php';
-    $deactivator = new \CartQuoteWooCommerce\Core\Deactivator();
-    $deactivator->deactivate();
+    try {
+        $deactivator = new \CartQuoteWooCommerce\Core\Deactivator();
+        $deactivator->deactivate();
+    } catch (Throwable $e) {
+        // Log error but don't stop deactivation if deactivator fails
+        error_log('Cart Quote WooCommerce & Email deactivation error: ' . $e->getMessage());
+    }
 }
 
 // Hook into plugins_loaded for initialization

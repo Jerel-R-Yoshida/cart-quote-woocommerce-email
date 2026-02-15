@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); class Email_Service { public static function send() {} }
