@@ -283,6 +283,7 @@ GPL-2.0-or-later. See [GNU General Public License](https://www.gnu.org/licenses/
 * Added division by zero protection
 * Added asset file existence checks
 * Simplified code with null coalescing operator
+* Fixed ZIP archive format causing activation errors on Linux servers
 
 ### 1.0.8
 * Fixed version mismatch in Plugin.php
