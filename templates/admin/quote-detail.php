@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
                 <?php echo esc_html(sprintf(__('Quote %s', 'cart-quote-woocommerce-email'), $quote->quote_id)); ?>
             </h2>
             <p class="cart-quote-meta">
-                <?php echo esc_html(sprintf(__('Submitted on %s', 'cart-quote-woocommerce-email'), date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($quote->created_at))); ?>
+                <?php echo esc_html(sprintf(__('Submitted on %s', 'cart-quote-woocommerce-email'), date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($quote->created_at)))); ?>
             </p>
         </div>
         <div>

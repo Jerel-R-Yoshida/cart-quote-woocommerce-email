@@ -158,7 +158,7 @@ if (!defined('ABSPATH')) {
 
     <!-- Pagination -->
     <?php
-    $total_pages = ceil($total / $per_page);
+    $total_pages = $per_page > 0 ? ceil($total / $per_page) : 1;
     if ($total_pages > 1) :
     ?>
     <div class="tablenav bottom">

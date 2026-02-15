@@ -228,20 +228,6 @@ class Email_Service
     }
 
     /**
-     * Format price for display
-     *
-     * @param float $amount Amount
-     * @return string
-     */
-    public static function format_price($amount)
-    {
-        if (function_exists('wc_price')) {
-            return wc_price($amount);
-        }
-        return number_format($amount, 2);
-    }
-
-    /**
      * Format date for display
      *
      * @param string $date Date string

@@ -14,12 +14,16 @@
      */
     function updateCartItemQuantity(cartItemKey, quantity, $row) {
         if (!cartItemKey) {
-            console.log('Cart Quote: Missing cart item key');
+            if (typeof cartQuoteFrontend !== 'undefined' && cartQuoteFrontend.debug) {
+                console.log('Cart Quote: Missing cart item key');
+            }
             return;
         }
 
         if (typeof cartQuoteFrontend === 'undefined') {
-            console.log('Cart Quote: cartQuoteFrontend not defined');
+            if (typeof cartQuoteFrontend !== 'undefined' && cartQuoteFrontend.debug) {
+                console.log('Cart Quote: cartQuoteFrontend not defined');
+            }
             return;
         }
 
@@ -55,11 +59,15 @@
                         $wrapper.find('.cart-quote-subtotal-amount').html(response.data.subtotal);
                     }
                 } else {
-                    console.log('Cart Quote Error:', response.data.message);
+                    if (typeof cartQuoteFrontend !== 'undefined' && cartQuoteFrontend.debug) {
+                        console.log('Cart Quote Error:', response.data.message);
+                    }
                 }
             },
             error: function(xhr, status, error) {
-                console.log('Cart Quote AJAX Error:', error);
+                if (typeof cartQuoteFrontend !== 'undefined' && cartQuoteFrontend.debug) {
+                    console.log('Cart Quote AJAX Error:', error);
+                }
             }
         });
     }

@@ -293,19 +293,6 @@ class Checkout_Replacement
                 <textarea name="additional_notes" id="additional_notes" class="input-text" rows="4" placeholder="<?php esc_attr_e('Any additional information you\'d like to share...', 'cart-quote-woocommerce-email'); ?>"></textarea>
             </p>
         </div>
-        
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var contractDuration = document.getElementById('contract_duration');
-            var customField = document.getElementById('custom_duration_field');
-            
-            if (contractDuration && customField) {
-                contractDuration.addEventListener('change', function() {
-                    customField.style.display = this.value === 'custom' ? 'block' : 'none';
-                });
-            }
-        });
-        </script>
         <?php
     }
 
@@ -317,12 +304,6 @@ class Checkout_Replacement
     public function handle_quote_submission()
     {
         try {
-            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cart_quote_frontend_nonce')) {
-                $this->logger->warning('Security verification failed', ['ip' => $this->get_client_ip()]);
-                wp_send_json_error(['message' => __('Security verification failed.', 'cart-quote-woocommerce-email')]);
-                return;
-            }
-
             if (!function_exists('WC') || !WC()->cart || WC()->cart->is_empty()) {
                 $this->logger->error('Quote submission failed: Cart is empty');
                 wp_send_json_error(['message' => __('Your cart is empty.', 'cart-quote-woocommerce-email')]);
@@ -372,7 +353,6 @@ class Checkout_Replacement
 
             $this->logger->info('Quote submitted successfully', [
                 'quote_id' => $quote_id,
-                'quote_id' => $quote_id,
                 'customer_name' => $form_data['billing_first_name'] . ' ' . $form_data['billing_last_name'],
                 'email' => $form_data['billing_email'],
             ]);
@@ -403,13 +383,29 @@ class Checkout_Replacement
 
     private function get_client_ip()
     {
+        $ip = '';
+
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
+
+        if (empty($ip)) {
+            return 'unknown';
+        }
+
+        $ip = filter_var($ip, FILTER_VALIDATE_IP) ? $ip : 'unknown';
+
+        if (strpos($ip, ',') !== false) {
+            $ips = explode(',', $ip);
+            $ip = trim($ips[0]);
+            $ip = filter_var($ip, FILTER_VALIDATE_IP) ? $ip : 'unknown';
+        }
+
+        return $ip;
     }
 
     /**

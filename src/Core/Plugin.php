@@ -182,20 +182,28 @@ final class Plugin
             return;
         }
 
-        wp_enqueue_style(
-            'cart-quote-admin',
-            CART_QUOTE_WC_PLUGIN_URL . 'assets/css/admin.css',
-            [],
-            $this->version
-        );
+        // Enqueue admin CSS if file exists
+        $admin_css = CART_QUOTE_WC_PLUGIN_DIR . 'assets/css/admin.css';
+        if (file_exists($admin_css)) {
+            wp_enqueue_style(
+                'cart-quote-admin',
+                CART_QUOTE_WC_PLUGIN_URL . 'assets/css/admin.css',
+                [],
+                $this->version
+            );
+        }
 
-        wp_enqueue_script(
-            'cart-quote-admin',
-            CART_QUOTE_WC_PLUGIN_URL . 'assets/js/admin.js',
-            ['jquery', 'jquery-ui-datepicker'],
-            $this->version,
-            true
-        );
+        // Enqueue admin JS if file exists
+        $admin_js = CART_QUOTE_WC_PLUGIN_DIR . 'assets/js/admin.js';
+        if (file_exists($admin_js)) {
+            wp_enqueue_script(
+                'cart-quote-admin',
+                CART_QUOTE_WC_PLUGIN_URL . 'assets/js/admin.js',
+                ['jquery', 'jquery-ui-datepicker'],
+                $this->version,
+                true
+            );
+        }
 
         wp_localize_script('cart-quote-admin', 'cartQuoteAdmin', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
@@ -224,20 +232,28 @@ final class Plugin
      */
     public function enqueue_frontend_assets()
     {
-        wp_enqueue_style(
-            'cart-quote-frontend',
-            CART_QUOTE_WC_PLUGIN_URL . 'assets/css/frontend.css',
-            [],
-            $this->version
-        );
+        // Enqueue frontend CSS if file exists
+        $frontend_css = CART_QUOTE_WC_PLUGIN_DIR . 'assets/css/frontend.css';
+        if (file_exists($frontend_css)) {
+            wp_enqueue_style(
+                'cart-quote-frontend',
+                CART_QUOTE_WC_PLUGIN_URL . 'assets/css/frontend.css',
+                [],
+                $this->version
+            );
+        }
 
-        wp_enqueue_script(
-            'cart-quote-frontend',
-            CART_QUOTE_WC_PLUGIN_URL . 'assets/js/frontend.js',
-            ['jquery'],
-            $this->version,
-            true
-        );
+        // Enqueue frontend JS if file exists
+        $frontend_js = CART_QUOTE_WC_PLUGIN_DIR . 'assets/js/frontend.js';
+        if (file_exists($frontend_js)) {
+            wp_enqueue_script(
+                'cart-quote-frontend',
+                CART_QUOTE_WC_PLUGIN_URL . 'assets/js/frontend.js',
+                ['jquery'],
+                $this->version,
+                true
+            );
+        }
 
         $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : '';
 
@@ -276,7 +292,7 @@ final class Plugin
      */
     public function get_service($name)
     {
-        return isset($this->services[$name]) ? $this->services[$name] : null;
+        return $this->services[$name] ?? null;
     }
 
     /**
