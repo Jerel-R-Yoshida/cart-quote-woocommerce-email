@@ -19,6 +19,9 @@ Thumbs.db
 # Build artifacts
 dist/
 *.zip
+build-zip.py
+test-extract/
+test-validate/
 
 # Temporary files
 *.tmp
