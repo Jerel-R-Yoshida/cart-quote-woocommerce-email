@@ -17,7 +17,6 @@
  *
  * @package CartQuoteWooCommerce
  * @author Jerel Yoshida
- * @company AllOutsourcing
  */
 
 // Prevent direct access
