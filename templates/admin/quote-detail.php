@@ -244,10 +244,17 @@ if (!defined('ABSPATH')) {
                         <ul class="cart-quote-activity-log">
                             <?php foreach ($logs as $log) : ?>
                                 <li>
-                                    <strong><?php echo esc_html(ucwords(str_replace('_', ' ', $log->action))); ?></strong>
-                                    <span class="log-time">
-                                        <?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log->created_at))); ?>
-                                    </span>
+                                    <div class="log-header">
+                                        <strong><?php echo esc_html(ucwords(str_replace('_', ' ', $log->action))); ?></strong>
+                                        <span class="log-time">
+                                            <?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log->created_at))); ?>
+                                        </span>
+                                    </div>
+                                    <?php if (!empty($log->details)) : ?>
+                                        <div class="log-description">
+                                            <?php echo esc_html(wp_trim_words($log->details, 10, '...')); ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

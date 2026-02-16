@@ -12,15 +12,28 @@
     // Cart Quote Admin
     const CartQuoteAdmin = {
         /**
+         * Debug log - only logs when debug mode is enabled
+         */
+        log: function(message, data) {
+            if (typeof cartQuoteAdmin !== 'undefined' && cartQuoteAdmin.debug) {
+                if (data !== undefined) {
+                    console.log('[CartQuote]', message, data);
+                } else {
+                    console.log('[CartQuote]', message);
+                }
+            }
+        },
+
+        /**
          * Initialize
          */
         init: function() {
-            console.log('[CartQuote] Initializing admin JS...');
+            this.log('Initializing admin JS...');
             this.bindEvents();
-            console.log('[CartQuote] Events bound successfully');
+            this.log('Events bound successfully');
             this.initDatepicker();
-            console.log('[CartQuote] Datepicker initialized');
-            console.log('[CartQuote] Init complete');
+            this.log('Datepicker initialized');
+            this.log('Init complete');
         },
 
         /**
@@ -208,21 +221,21 @@
          */
         saveNotes: function(e) {
             e.preventDefault();
-            console.log('[CartQuote] saveNotes triggered');
-            console.log('[CartQuote] Button data-quote-id:', $(this).data('quote-id'));
-            console.log('[CartQuote] Notes value:', $('#admin_notes').val());
-            console.log('[CartQuote] cartQuoteAdmin object:', cartQuoteAdmin);
+            var self = CartQuoteAdmin;
+            self.log('saveNotes triggered');
+            self.log('Button data-quote-id:', $(this).data('quote-id'));
+            self.log('Notes value:', $('#admin_notes').val());
 
             var $btn = $(this);
             var quoteId = $btn.data('quote-id');
             var notes = $('#admin_notes').val();
 
             if (!confirm(cartQuoteAdmin.i18n.confirmSaveNotes)) {
-                console.log('[CartQuote] Confirmation cancelled');
+                self.log('Confirmation cancelled');
                 return;
             }
 
-            console.log('[CartQuote] Sending AJAX request...');
+            self.log('Sending AJAX request...');
             $btn.prop('disabled', true).text(cartQuoteAdmin.i18n.saving);
 
             $.ajax({
@@ -235,7 +248,7 @@
                     notes: notes
                 },
                 success: function(response) {
-                    console.log('[CartQuote] saveNotes AJAX response:', response);
+                    self.log('saveNotes AJAX response:', response);
                     if (response.success) {
                         CartQuoteAdmin.showToast(response.data.message, 'success');
                     } else {
@@ -243,7 +256,9 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('[CartQuote] saveNotes AJAX error:', xhr, status, error);
+                    if (cartQuoteAdmin.debug) {
+                        console.error('[CartQuote] saveNotes AJAX error:', xhr, status, error);
+                    }
                     CartQuoteAdmin.showToast(cartQuoteAdmin.i18n.error, 'error');
                 },
                 complete: function() {
