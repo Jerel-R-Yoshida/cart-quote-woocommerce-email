@@ -40,7 +40,7 @@ final class Plugin
      *
      * @var string
      */
-    private $version = '1.0.31';
+    private $version = '1.0.32';
 
     /**
      * Get singleton instance
@@ -219,6 +219,7 @@ final class Plugin
         wp_localize_script('cart-quote-admin', 'cartQuoteAdmin', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('cart_quote_admin_nonce'),
+            'debug' => (defined('WP_DEBUG') && WP_DEBUG),
             'i18n' => [
                 'confirmDelete' => __('Are you sure you want to delete this quote?', 'cart-quote-woocommerce-email'),
                 'confirmStatusChange' => __('Are you sure you want to change the status?', 'cart-quote-woocommerce-email'),

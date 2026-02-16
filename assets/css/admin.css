@@ -224,11 +224,23 @@
     border-bottom: none;
 }
 
+.cart-quote-activity-log .log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .cart-quote-activity-log .log-time {
     color: #999;
-    display: block;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.cart-quote-activity-log .log-description {
+    color: #666;
     font-size: 12px;
-    margin-top: 3px;
+    margin-top: 6px;
+    line-height: 1.4;
 }
 
 /* Google Calendar Section */
