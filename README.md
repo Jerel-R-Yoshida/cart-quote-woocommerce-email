@@ -1,6 +1,6 @@
 # Cart Quote WooCommerce & Email
 
-[![Version](https://img.shields.io/badge/version-1.0.25-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email/releases)
+[![Version](https://img.shields.io/badge/version-1.0.28-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email/releases)
 [![License](https://img.shields.io/badge/license-GPL--2.0-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![PHP](https://img.shields.io/badge/PHP-%3E%3D7.4-8892BF.svg)](https://php.net)
 [![WordPress](https://img.shields.io/badge/WordPress-%3E%3D5.8-21759B.svg)](https://wordpress.org)
@@ -232,6 +232,7 @@ cart-quote-woocommerce-email/
 
 | Version | Date | Changes |
 |---------|------|---------|
+| [v1.0.27](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email/releases/tag/v1.0.27) | 2026-02-16 | ✨ **New Features**: Admin notes confirmation popup, Meeting Editor for date/time editing, Google Meet toggle setting, Create Google Meet button on quote detail |
 | [v1.0.25](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email/releases/tag/v1.0.25) | 2026-02-16 | 🔒 **Security & Bug Fixes**: IP spoofing vulnerability fix, rate limiting fix, SQL injection prevention, missing returns after wp_send_json_error, PHP 8.1+ deprecation warning fix, input length validation, redundant JS debug check removal |
 | [v1.0.24](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email/releases/tag/v1.0.24) | 2026-02-15 | 🐛 **Bug Fix**: Minor fixes and cleanup |
 | [v1.0.23](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email/releases/tag/v1.0.23) | 2026-02-15 | 🛠️ **fix**: CRITICAL FIX: Build system path normalization and structure improvements |
@@ -413,6 +414,13 @@ GPL-2.0-or-later. See [GNU General Public License](https://www.gnu.org/licenses/
 ---
 
 ## Changelog
+
+### 1.0.27
+* ✨ **New Features**:
+  - Admin notes now shows confirmation popup before saving on quote detail page
+  - Added Meeting Editor section on quote detail page allowing admins to edit meeting date/time with confirmation popup
+  - Added Google Meet toggle setting in Settings page
+  - Added "Create Google Meet" button on quote detail when Google Meet is enabled and connected - creates calendar event with Meet conference link
 
 ### 1.0.25
 * 🔒 **Security Fixes**:
