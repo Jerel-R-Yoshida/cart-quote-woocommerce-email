@@ -220,7 +220,6 @@
     padding: 15px;
     z-index: 1000;
     display: none;
-    margin-top: 10px;
 }
 
 .cart-quote-mini-cart:hover .cart-quote-mini-dropdown {
@@ -282,31 +281,8 @@
 .cart-quote-mini-btn {
     flex: 1;
     display: block;
-    padding: 10px;
     text-align: center;
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.cart-quote-mini-btn.view-cart {
-    background: #f5f5f5;
-    color: #333;
-}
-
-.cart-quote-mini-btn.view-cart:hover {
-    background: #e5e5e5;
-}
-
-.cart-quote-mini-btn.get-quote {
-    background: #0073aa;
-    color: #fff;
-}
-
-.cart-quote-mini-btn.get-quote:hover {
-    background: #005177;
 }
 
 /* Quote Form Styles */

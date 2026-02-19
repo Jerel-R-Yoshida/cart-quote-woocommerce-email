@@ -153,6 +153,18 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
             ]
         );
 
+        $this->add_control(
+            'view_cart_button_text',
+            [
+                'label' => __('View Cart Button Text', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('View Cart', 'cart-quote-woocommerce-email'),
+                'condition' => [
+                    'show_items_list' => 'yes',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
 
         // Icon Style Section
@@ -358,14 +370,14 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
 
         $this->end_controls_section();
 
-        // Button Style Section
+        // View Cart Button Style Section
         $this->start_controls_section(
-            'button_style_section',
+            'view_cart_button_style_section',
             [
-                'label' => __('Button Style', 'cart-quote-woocommerce-email'),
+                'label' => __('View Cart Button Style', 'cart-quote-woocommerce-email'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
                 'condition' => [
-                    'show_quote_button' => 'yes',
+                    'show_items_list' => 'yes',
                 ],
             ]
         );
@@ -373,59 +385,257 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
-                'name' => 'button_typography',
-                'selector' => '{{WRAPPER}} .cart-quote-mini-btn',
+                'name' => 'view_cart_button_typography',
+                'selector' => '{{WRAPPER}} .cart-quote-mini-btn.view-cart',
             ]
         );
 
         $this->add_control(
-            'button_bg_color',
+            'view_cart_button_font_size',
+            [
+                'label' => __('Font Size', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px', 'em', 'rem'],
+                'range' => [
+                    'px' => [
+                        'min' => 10,
+                        'max' => 36,
+                        'step' => 1,
+                    ],
+                    'em' => [
+                        'min' => 0.7,
+                        'max' => 2.5,
+                        'step' => 0.1,
+                    ],
+                    'rem' => [
+                        'min' => 0.7,
+                        'max' => 2.5,
+                        'step' => 0.1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 13,
+                    'unit' => 'px',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_font_weight',
+            [
+                'label' => __('Font Weight', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '600',
+                'options' => [
+                    'normal' => __('Normal (400)', 'cart-quote-woocommerce-email'),
+                    '500' => __('Medium (500)', 'cart-quote-woocommerce-email'),
+                    '600' => __('Semi-Bold (600)', 'cart-quote-woocommerce-email'),
+                    '700' => __('Bold (700)', 'cart-quote-woocommerce-email'),
+                    '800' => __('Extra Bold (800)', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_font_style',
+            [
+                'label' => __('Font Style', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'normal',
+                'options' => [
+                    'normal' => __('Normal', 'cart-quote-woocommerce-email'),
+                    'italic' => __('Italic', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'font-style: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_text_transform',
+            [
+                'label' => __('Text Transform', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'none',
+                'options' => [
+                    'none' => __('None', 'cart-quote-woocommerce-email'),
+                    'uppercase' => __('Uppercase', 'cart-quote-woocommerce-email'),
+                    'lowercase' => __('Lowercase', 'cart-quote-woocommerce-email'),
+                    'capitalize' => __('Capitalize', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'text-transform: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_letter_spacing',
+            [
+                'label' => __('Letter Spacing', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px', 'em'],
+                'range' => [
+                    'px' => [
+                        'min' => -2,
+                        'max' => 5,
+                        'step' => 0.5,
+                    ],
+                    'em' => [
+                        'min' => -0.1,
+                        'max' => 0.5,
+                        'step' => 0.05,
+                    ],
+                ],
+                'default' => [
+                    'size' => 0,
+                    'unit' => 'px',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'letter-spacing: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_bg_color',
             [
                 'label' => __('Background Color', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .cart-quote-mini-btn' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'background-color: {{VALUE}};',
                 ],
             ]
         );
 
         $this->add_control(
-            'button_text_color',
+            'view_cart_button_text_color',
             [
                 'label' => __('Text Color', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .cart-quote-mini-btn' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'color: {{VALUE}};',
                 ],
             ]
         );
 
         $this->add_control(
-            'button_padding',
+            'view_cart_button_padding',
             [
                 'label' => __('Padding', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%', 'em'],
                 'selectors' => [
-                    '{{WRAPPER}} .cart-quote-mini-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->add_control(
-            'button_border_radius',
+            'view_cart_button_border_radius',
             [
                 'label' => __('Border Radius', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors' => [
-                    '{{WRAPPER}} .cart-quote-mini-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->add_control(
-            'button_hover_heading',
+            'view_cart_button_border_width',
+            [
+                'label' => __('Border Width', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 10,
+                        'step' => 1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 0,
+                    'unit' => 'px',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'border-width: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_border_color',
+            [
+                'label' => __('Border Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_border_style',
+            [
+                'label' => __('Border Style', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'none',
+                'options' => [
+                    'none' => __('None', 'cart-quote-woocommerce-email'),
+                    'solid' => __('Solid', 'cart-quote-woocommerce-email'),
+                    'dashed' => __('Dashed', 'cart-quote-woocommerce-email'),
+                    'dotted' => __('Dotted', 'cart-quote-woocommerce-email'),
+                    'double' => __('Double', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'border-style: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'view_cart_button_box_shadow',
+                'selector' => '{{WRAPPER}} .cart-quote-mini-btn.view-cart',
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_transition',
+            [
+                'label' => __('Transition Duration', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['s'],
+                'range' => [
+                    's' => [
+                        'min' => 0,
+                        'max' => 2,
+                        'step' => 0.1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 0.2,
+                    'unit' => 's',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart' => 'transition: all {{SIZE}}{{UNIT}} ease;',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_hover_heading',
             [
                 'label' => __('Hover State', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::HEADING,
@@ -434,24 +644,438 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
         );
 
         $this->add_control(
-            'button_hover_bg_color',
+            'view_cart_button_hover_font_weight',
             [
-                'label' => __('Hover Background', 'cart-quote-woocommerce-email'),
-                'type' => \Elementor\Controls_Manager::COLOR,
+                'label' => __('Hover Font Weight', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '',
+                'options' => [
+                    '' => __('Same as default', 'cart-quote-woocommerce-email'),
+                    'normal' => __('Normal (400)', 'cart-quote-woocommerce-email'),
+                    '500' => __('Medium (500)', 'cart-quote-woocommerce-email'),
+                    '600' => __('Semi-Bold (600)', 'cart-quote-woocommerce-email'),
+                    '700' => __('Bold (700)', 'cart-quote-woocommerce-email'),
+                    '800' => __('Extra Bold (800)', 'cart-quote-woocommerce-email'),
+                ],
                 'selectors' => [
-                    '{{WRAPPER}} .cart-quote-mini-btn:hover' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart:hover' => 'font-weight: {{VALUE}};',
                 ],
             ]
         );
 
         $this->add_control(
-            'button_hover_text_color',
+            'view_cart_button_hover_text_transform',
+            [
+                'label' => __('Hover Text Transform', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '',
+                'options' => [
+                    '' => __('Same as default', 'cart-quote-woocommerce-email'),
+                    'none' => __('None', 'cart-quote-woocommerce-email'),
+                    'uppercase' => __('Uppercase', 'cart-quote-woocommerce-email'),
+                    'lowercase' => __('Lowercase', 'cart-quote-woocommerce-email'),
+                    'capitalize' => __('Capitalize', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart:hover' => 'text-transform: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_hover_bg_color',
+            [
+                'label' => __('Hover Background Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_hover_text_color',
             [
                 'label' => __('Hover Text Color', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .cart-quote-mini-btn:hover' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart:hover' => 'color: {{VALUE}};',
                 ],
+            ]
+        );
+
+        $this->add_control(
+            'view_cart_button_hover_border_color',
+            [
+                'label' => __('Hover Border Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.view-cart:hover' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'view_cart_button_hover_box_shadow',
+                'selector' => '{{WRAPPER}} .cart-quote-mini-btn.view-cart:hover',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Quote Button Style Section
+        $this->start_controls_section(
+            'quote_button_style_section',
+            [
+                'label' => __('Quote Button Style', 'cart-quote-woocommerce-email'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'show_items_list' => 'yes',
+                    'show_quote_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'quote_button_typography',
+                'selector' => '{{WRAPPER}} .cart-quote-mini-btn.get-quote',
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_font_size',
+            [
+                'label' => __('Font Size', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px', 'em', 'rem'],
+                'range' => [
+                    'px' => [
+                        'min' => 10,
+                        'max' => 36,
+                        'step' => 1,
+                    ],
+                    'em' => [
+                        'min' => 0.7,
+                        'max' => 2.5,
+                        'step' => 0.1,
+                    ],
+                    'rem' => [
+                        'min' => 0.7,
+                        'max' => 2.5,
+                        'step' => 0.1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 13,
+                    'unit' => 'px',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_font_weight',
+            [
+                'label' => __('Font Weight', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '600',
+                'options' => [
+                    'normal' => __('Normal (400)', 'cart-quote-woocommerce-email'),
+                    '500' => __('Medium (500)', 'cart-quote-woocommerce-email'),
+                    '600' => __('Semi-Bold (600)', 'cart-quote-woocommerce-email'),
+                    '700' => __('Bold (700)', 'cart-quote-woocommerce-email'),
+                    '800' => __('Extra Bold (800)', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_font_style',
+            [
+                'label' => __('Font Style', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'normal',
+                'options' => [
+                    'normal' => __('Normal', 'cart-quote-woocommerce-email'),
+                    'italic' => __('Italic', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'font-style: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_text_transform',
+            [
+                'label' => __('Text Transform', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'none',
+                'options' => [
+                    'none' => __('None', 'cart-quote-woocommerce-email'),
+                    'uppercase' => __('Uppercase', 'cart-quote-woocommerce-email'),
+                    'lowercase' => __('Lowercase', 'cart-quote-woocommerce-email'),
+                    'capitalize' => __('Capitalize', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'text-transform: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_letter_spacing',
+            [
+                'label' => __('Letter Spacing', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px', 'em'],
+                'range' => [
+                    'px' => [
+                        'min' => -2,
+                        'max' => 5,
+                        'step' => 0.5,
+                    ],
+                    'em' => [
+                        'min' => -0.1,
+                        'max' => 0.5,
+                        'step' => 0.05,
+                    ],
+                ],
+                'default' => [
+                    'size' => 0,
+                    'unit' => 'px',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'letter-spacing: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_bg_color',
+            [
+                'label' => __('Background Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_text_color',
+            [
+                'label' => __('Text Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_padding',
+            [
+                'label' => __('Padding', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_border_radius',
+            [
+                'label' => __('Border Radius', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_border_width',
+            [
+                'label' => __('Border Width', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 10,
+                        'step' => 1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 0,
+                    'unit' => 'px',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'border-width: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_border_color',
+            [
+                'label' => __('Border Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_border_style',
+            [
+                'label' => __('Border Style', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'none',
+                'options' => [
+                    'none' => __('None', 'cart-quote-woocommerce-email'),
+                    'solid' => __('Solid', 'cart-quote-woocommerce-email'),
+                    'dashed' => __('Dashed', 'cart-quote-woocommerce-email'),
+                    'dotted' => __('Dotted', 'cart-quote-woocommerce-email'),
+                    'double' => __('Double', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'border-style: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'quote_button_box_shadow',
+                'selector' => '{{WRAPPER}} .cart-quote-mini-btn.get-quote',
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_transition',
+            [
+                'label' => __('Transition Duration', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['s'],
+                'range' => [
+                    's' => [
+                        'min' => 0,
+                        'max' => 2,
+                        'step' => 0.1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 0.2,
+                    'unit' => 's',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote' => 'transition: all {{SIZE}}{{UNIT}} ease;',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_hover_heading',
+            [
+                'label' => __('Hover State', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_hover_font_weight',
+            [
+                'label' => __('Hover Font Weight', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '',
+                'options' => [
+                    '' => __('Same as default', 'cart-quote-woocommerce-email'),
+                    'normal' => __('Normal (400)', 'cart-quote-woocommerce-email'),
+                    '500' => __('Medium (500)', 'cart-quote-woocommerce-email'),
+                    '600' => __('Semi-Bold (600)', 'cart-quote-woocommerce-email'),
+                    '700' => __('Bold (700)', 'cart-quote-woocommerce-email'),
+                    '800' => __('Extra Bold (800)', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote:hover' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_hover_text_transform',
+            [
+                'label' => __('Hover Text Transform', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '',
+                'options' => [
+                    '' => __('Same as default', 'cart-quote-woocommerce-email'),
+                    'none' => __('None', 'cart-quote-woocommerce-email'),
+                    'uppercase' => __('Uppercase', 'cart-quote-woocommerce-email'),
+                    'lowercase' => __('Lowercase', 'cart-quote-woocommerce-email'),
+                    'capitalize' => __('Capitalize', 'cart-quote-woocommerce-email'),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote:hover' => 'text-transform: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_hover_bg_color',
+            [
+                'label' => __('Hover Background Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_hover_text_color',
+            [
+                'label' => __('Hover Text Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote:hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'quote_button_hover_border_color',
+            [
+                'label' => __('Hover Border Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-mini-btn.get-quote:hover' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'quote_button_hover_box_shadow',
+                'selector' => '{{WRAPPER}} .cart-quote-mini-btn.get-quote:hover',
             ]
         );
 
@@ -599,9 +1223,9 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
 
                             <div class="cart-quote-mini-actions">
                                 <a href="<?php echo esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : '#'); ?>" class="cart-quote-mini-btn view-cart">
-                                    <?php esc_html_e('View Cart', 'cart-quote-woocommerce-email'); ?>
+                                    <?php echo esc_html($settings['view_cart_button_text']); ?>
                                 </a>
-                                
+
                                 <?php if ($settings['show_quote_button'] === 'yes') : ?>
                                     <a href="<?php echo esc_url(function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : '#'); ?>" class="cart-quote-mini-btn get-quote">
                                         <?php echo esc_html($settings['quote_button_text']); ?>
