@@ -56,7 +56,7 @@ class Cart_Widget extends \Elementor\Widget_Base
      */
     public function get_categories()
     {
-        return ['woocommerce', 'cart-quote'];
+        return ['yosh-tools'];
     }
 
     /**
@@ -160,6 +160,17 @@ class Cart_Widget extends \Elementor\Widget_Base
             [
                 'label' => __('Button Style', 'cart-quote-woocommerce-email'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'show_quote_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'button_typography',
+                'selector' => '{{WRAPPER}} .cart-quote-proceed-btn',
             ]
         );
 
@@ -181,6 +192,117 @@ class Cart_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .cart-quote-proceed-btn' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_padding',
+            [
+                'label' => __('Padding', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-proceed-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_border_radius',
+            [
+                'label' => __('Border Radius', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-proceed-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_heading',
+            [
+                'label' => __('Hover State', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_bg_color',
+            [
+                'label' => __('Hover Background', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-proceed-btn:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_text_color',
+            [
+                'label' => __('Hover Text Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-proceed-btn:hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Style Section - Table
+        $this->start_controls_section(
+            'table_style_section',
+            [
+                'label' => __('Table Style', 'cart-quote-woocommerce-email'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'table_bg_color',
+            [
+                'label' => __('Table Background', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-table' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'table_border_color',
+            [
+                'label' => __('Table Border', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-table, {{WRAPPER}} .cart-quote-table th, {{WRAPPER}} .cart-quote-table td' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'table_text_color',
+            [
+                'label' => __('Table Text Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-table' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'table_border_radius',
+            [
+                'label' => __('Border Radius', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-table' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );

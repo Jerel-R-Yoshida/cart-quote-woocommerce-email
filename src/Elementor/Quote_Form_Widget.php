@@ -53,7 +53,7 @@ class Quote_Form_Widget extends \Elementor\Widget_Base
      */
     public function get_categories()
     {
-        return ['woocommerce', 'cart-quote'];
+        return ['yosh-tools'];
     }
 
     /**
@@ -388,12 +388,44 @@ class Quote_Form_Widget extends \Elementor\Widget_Base
         );
 
         $this->add_control(
+            'button_padding',
+            [
+                'label' => __('Padding', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-submit-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_heading',
+            [
+                'label' => __('Hover State', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
             'button_hover_bg_color',
             [
                 'label' => __('Hover Background Color', 'cart-quote-woocommerce-email'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .cart-quote-submit-btn:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_text_color',
+            [
+                'label' => __('Hover Text Color', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .cart-quote-submit-btn:hover' => 'color: {{VALUE}};',
                 ],
             ]
         );

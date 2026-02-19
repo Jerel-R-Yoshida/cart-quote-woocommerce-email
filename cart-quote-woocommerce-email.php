@@ -3,7 +3,7 @@
  * Plugin Name: Cart Quote WooCommerce & Email
  * Plugin URI: https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email
  * Description: Transform WooCommerce checkout into a quote submission system with Google Calendar integration and email notifications. No payment processing required.
- * Version: 1.0.32
+ * Version: 1.0.33
  * Author: Jerel Yoshida
  * Author URI: https://github.com/jerelryoshida-dot
  * Text Domain: cart-quote-woocommerce-email
@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('CART_QUOTE_WC_VERSION', '1.0.32');
+define('CART_QUOTE_WC_VERSION', '1.0.33');
 define('CART_QUOTE_WC_PLUGIN_FILE', __FILE__);
 define('CART_QUOTE_WC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CART_QUOTE_WC_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -133,8 +133,24 @@ function cart_quote_wc_init() {
     
     // Initialize Elementor widgets if Elementor is active
     if (cart_quote_wc_check_elementor()) {
+        add_action('elementor/elements/categories_registered', 'cart_quote_register_elementor_category');
         add_action('elementor/widgets/register', 'cart_quote_register_elementor_widgets');
     }
+}
+
+/**
+ * Register custom Elementor category
+ *
+ * @param object $elements_manager Elementor elements manager
+ */
+function cart_quote_register_elementor_category($elements_manager) {
+    $elements_manager->add_category(
+        'yosh-tools',
+        [
+            'title' => __('Yosh Tools', 'cart-quote-woocommerce-email'),
+            'icon'  => 'fa fa-plug',
+        ]
+    );
 }
 
 /**
