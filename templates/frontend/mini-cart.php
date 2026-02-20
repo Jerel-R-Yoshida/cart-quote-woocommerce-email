@@ -43,7 +43,7 @@ $is_empty = WC()->cart->is_empty();
                                 <span class="item-qty">x<?php echo esc_html($cart_item['quantity']); ?></span>
                             </span>
                             <span>
-                                <span class="item-qty"><?php echo esc_html($cart_item['tier_level']); ?></span>
+                                <span class="item-qty">tier <?php echo esc_html($cart_item['tier_level']); ?></span>
                             </span>
                             <span class="item-price">
                                 <?php echo wc_price($cart_item['line_total']); ?>
