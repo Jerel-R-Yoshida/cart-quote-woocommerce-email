@@ -168,6 +168,33 @@ if (!defined('ABSPATH')) {
             </div>
         </div>
 
+        <!-- Debug Settings -->
+        <div class="cart-quote-settings-section">
+            <h3><?php esc_html_e('Debug Settings', 'cart-quote-woocommerce-email'); ?></h3>
+            <div class="inside">
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e('Mini-Cart Debug Mode', 'cart-quote-woocommerce-email'); ?></th>
+                        <td>
+                            <label>
+                                <select name="debug_mini_cart" id="debug_mini_cart">
+                                    <option value="no" <?php selected(get_option('cart_quote_wc_debug_mini_cart', 'no'), 'no'); ?>><?php esc_html_e('Disabled', 'cart-quote-woocommerce-email'); ?></option>
+                                    <option value="yes" <?php selected(get_option('cart_quote_wc_debug_mini_cart', 'no'), 'yes'); ?>><?php esc_html_e('Enabled', 'cart-quote-woocommerce-email'); ?></option>
+                                </select>
+                            </label>
+                            <p class="description">
+                                <?php esc_html_e('Enable detailed debug logging for mini-cart tier data. Logs will be written to wp-content/debug.log when WP_DEBUG and WP_DEBUG_LOG are also enabled in wp-config.php.', 'cart-quote-woocommerce-email'); ?>
+                            </p>
+                            <p class="description" style="color: #d63638;">
+                                <strong><?php esc_html_e('Note:', 'cart-quote-woocommerce-email'); ?></strong>
+                                <?php esc_html_e('This logs all cart item data including tier information. Disable when not debugging.', 'cart-quote-woocommerce-email'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
         <!-- Data Settings -->
         <div class="cart-quote-settings-section">
             <h3><?php esc_html_e('Data Settings', 'cart-quote-woocommerce-email'); ?></h3>

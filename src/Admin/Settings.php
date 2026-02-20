@@ -218,12 +218,11 @@ class Settings
         return (bool) get_option('cart_quote_wc_enable_google_meet', false);
     }
 
-    /**
-     * Encrypt sensitive data
-     *
-     * @param string $data Data to encrypt
-     * @return string
-     */
+    public static function is_debug_mini_cart_enabled(): bool
+    {
+        return get_option('cart_quote_wc_debug_mini_cart', 'no') === 'yes';
+    }
+
     public static function encrypt(string $data): string
     {
         if (empty($data)) {

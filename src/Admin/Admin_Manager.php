@@ -293,6 +293,13 @@ class Admin_Manager
         update_option('cart_quote_wc_auto_create_event', isset($_POST['auto_create_event']));
         update_option('cart_quote_wc_enable_google_meet', isset($_POST['enable_google_meet']));
         update_option('cart_quote_wc_delete_on_uninstall', isset($_POST['delete_on_uninstall']));
+        
+        // Debug settings
+        if (isset($_POST['debug_mini_cart'])) {
+            update_option('cart_quote_wc_debug_mini_cart', sanitize_text_field($_POST['debug_mini_cart']));
+        } else {
+            update_option('cart_quote_wc_debug_mini_cart', 'no');
+        }
     }
 
     /**
