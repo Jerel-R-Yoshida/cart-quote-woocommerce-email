@@ -259,6 +259,23 @@
     font-size: 14px;
 }
 
+.cart-quote-mini-item .item-tier-level {
+    color: #0073aa;
+    font-weight: 600;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.cart-quote-mini-item .item-tier-level span {
+    color: #0073aa;
+    font-weight: 700;
+}
+
+.cart-quote-mini-item .item-tier-level:first-child {
+    font-weight: 400;
+    color: #666;
+}
+
 .cart-quote-mini-item .item-price {
     font-weight: 600;
     text-align: right;

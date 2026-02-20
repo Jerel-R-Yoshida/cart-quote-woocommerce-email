@@ -582,11 +582,18 @@ function isValidEmail(email) {
                                 if ($itemsList.length) {
                                     $itemsList.empty();
                                     
-                                    response.data.items.forEach(function(item) {
+                                     response.data.items.forEach(function(item) {
                                         var $item = $('<li class="cart-quote-mini-item"></li>');
+                                        var tierLevelHtml = '';
+                                        
+                                        if (item.tier_level) {
+                                            tierLevelHtml = '<span><span class="item-tier-level">tier ' + item.tier_level + '</span></span>';
+                                        }
+                                        
                                         $item.html(
                                             '<span class="item-name">' + item.product_name + 
                                             '<span class="item-qty">x' + item.quantity + '</span></span>' +
+                                            tierLevelHtml +
                                             '<span class="item-price">' + item.line_total + '</span>'
                                         );
                                         $itemsList.append($item);

@@ -37,14 +37,17 @@ $is_empty = WC()->cart->is_empty();
                 <ul class="cart-quote-mini-items">
                     <?php foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) : ?>
                         <?php $product = $cart_item['data']; ?>
+                        <?php $tier_level = isset($cart_item['tier_level']) ? $cart_item['tier_level'] : ''; ?>
                         <li class="cart-quote-mini-item">
                             <span class="item-name">
                                 <?php echo esc_html($product->get_name()); ?>
                                 <span class="item-qty">x<?php echo esc_html($cart_item['quantity']); ?></span>
                             </span>
-                            <span>
-                                <span class="item-qty">tier <?php echo esc_html($cart_item['tier_level']); ?></span>
-                            </span>
+                            <?php if ($tier_level) : ?>
+                                <span>
+                                    <span class="item-tier-level">tier <?php echo esc_html($tier_level); ?></span>
+                                </span>
+                            <?php endif; ?>
                             <span class="item-price">
                                 <?php echo wc_price($cart_item['line_total']); ?>
                             </span>
