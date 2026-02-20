@@ -53,7 +53,6 @@ class Tier_Meta_Box
         );
 
         wp_localize_script('cart-quote-tier-meta-box', 'cartQuoteTier', [
-            'maxTiers'     => Tier_Service::MAX_TIERS,
             'confirmRemove' => __('Are you sure you want to remove this tier?', 'cart-quote-woocommerce-email'),
         ]);
     }
@@ -62,24 +61,7 @@ class Tier_Meta_Box
     {
         wp_nonce_field('cart_quote_tier_save', 'cart_quote_tier_nonce');
 
-        $tiers = [];
-
-        for ($i = 1; $i <= Tier_Service::MAX_TIERS; $i++) {
-            $level = get_post_meta($post->ID, "_cart_quote_tier_{$i}_level", true);
-
-            if ($level === '' || $level === false) {
-                continue;
-            }
-
-            $tiers[] = [
-                'level'         => $level,
-                'description'   => get_post_meta($post->ID, "_cart_quote_tier_{$i}_description", true),
-                'tier_name'     => get_post_meta($post->ID, "_cart_quote_tier_{$i}_tier_name", true),
-                'monthly_price' => get_post_meta($post->ID, "_cart_quote_tier_{$i}_monthly_price", true),
-                'hourly_price'  => get_post_meta($post->ID, "_cart_quote_tier_{$i}_hourly_price", true),
-                'is_active'     => get_post_meta($post->ID, "_cart_quote_tier_{$i}_is_active", true),
-            ];
-        }
+        $tiers = Tier_Service::get_all_tiers_by_product($post->ID);
 
         include dirname(__FILE__, 3) . '/templates/admin/tier-meta-box.php';
     }

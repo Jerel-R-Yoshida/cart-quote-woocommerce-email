@@ -23,13 +23,12 @@ if (!defined('ABSPATH')) {
         <?php else : ?>
             <?php foreach ($tiers as $index => $tier) : ?>
                 <?php
-                $tier_num = $index + 1;
-                $tier_level = $tier['level'] ?? $tier_num;
+                $tier_num = $tier['tier_level'] ?? ($index + 1);
+                $tier_level = $tier['tier_level'] ?? $tier_num;
                 $description = $tier['description'] ?? '';
                 $tier_name = $tier['tier_name'] ?? '';
                 $monthly_price = $tier['monthly_price'] ?? '';
                 $hourly_price = $tier['hourly_price'] ?? '';
-                $is_active = !empty($tier['is_active']);
                 ?>
                 <div class="cart-quote-tier-row" data-tier-index="<?php echo esc_attr($index); ?>">
                     <div class="cart-quote-tier-header">
@@ -100,16 +99,6 @@ if (!defined('ABSPATH')) {
                                        step="0.01"
                                        min="0"
                                        class="small-text">
-                            </div>
-                            <div class="cart-quote-field cart-quote-field-checkbox">
-                                <label for="cart_quote_tiers_<?php echo esc_attr($index); ?>_is_active">
-                                    <input type="checkbox"
-                                           id="cart_quote_tiers_<?php echo esc_attr($index); ?>_is_active"
-                                           name="cart_quote_tiers[<?php echo esc_attr($index); ?>][is_active]"
-                                           value="1"
-                                           <?php checked($is_active); ?>>
-                                    <?php esc_html_e('Active', 'cart-quote-woocommerce-email'); ?>
-                                </label>
                             </div>
                         </div>
                     </div>
@@ -193,16 +182,6 @@ if (!defined('ABSPATH')) {
                                step="0.01"
                                min="0"
                                class="small-text">
-                    </div>
-                    <div class="cart-quote-field cart-quote-field-checkbox">
-                        <label for="cart_quote_tiers_{{index}}_is_active">
-                            <input type="checkbox"
-                                   id="cart_quote_tiers_{{index}}_is_active"
-                                   name="cart_quote_tiers[{{index}}][is_active]"
-                                   value="1"
-                                   checked>
-                            <?php esc_html_e('Active', 'cart-quote-woocommerce-email'); ?>
-                        </label>
                     </div>
                 </div>
             </div>

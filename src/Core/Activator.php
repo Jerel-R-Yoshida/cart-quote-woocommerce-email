@@ -27,6 +27,7 @@ class Activator
     public function activate(): void
     {
         $this->create_tables();
+        $this->cleanup_old_tier_meta();
         $this->create_default_options();
         $this->schedule_cron_jobs();
         $this->set_version();
@@ -80,6 +81,16 @@ class Activator
 
         // Create logs table
         $this->create_logs_table();
+    }
+
+    private function cleanup_old_tier_meta(): void
+    {
+        global $wpdb;
+
+        $wpdb->query($wpdb->prepare(
+            "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s",
+            $wpdb->esc_like('_cart_quote_tier_') . '%'
+        ));
     }
 
     /**

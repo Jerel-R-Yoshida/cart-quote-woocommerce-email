@@ -2,11 +2,7 @@
 /**
  * Tier Service
  *
- * Handles tier data retrieval from WooCommerce product meta fields.
- * Tier data is stored as individual meta fields per tier level.
- *
- * Meta field naming convention: _cart_quote_tier_{n}_{field}
- * Where n = tier number (1, 2, 3, ...) and field = level|description|tier_name|monthly_price|hourly_price|is_active
+ * Handles tier data retrieval from the wp_welp_product_tiers database table.
  *
  * @package CartQuoteWooCommerce\Services
  * @author Jerel Yoshida
@@ -22,35 +18,25 @@ use CartQuoteWooCommerce\Core\Debug_Logger;
 
 class Tier_Service
 {
-    const MAX_TIERS = 10;
+    private static $table_name = 'welp_product_tiers';
 
     public static function get_all_tiers_by_product(int $product_id): array
     {
+        global $wpdb;
+
         if ($product_id <= 0) {
             return [];
         }
 
         try {
-            $tiers = [];
+            $table = $wpdb->prefix . self::$table_name;
 
-            for ($i = 1; $i <= self::MAX_TIERS; $i++) {
-                $level = get_post_meta($product_id, "_cart_quote_tier_{$i}_level", true);
+            $tiers = $wpdb->get_results($wpdb->prepare(
+                "SELECT * FROM `{$table}` WHERE product_id = %d ORDER BY `tier_level` ASC",
+                $product_id
+            ), ARRAY_A);
 
-                if ($level === '' || $level === false) {
-                    break;
-                }
-
-                $tiers[] = [
-                    'tier_level'    => (int) $level,
-                    'description'   => get_post_meta($product_id, "_cart_quote_tier_{$i}_description", true) ?: '',
-                    'tier_name'     => get_post_meta($product_id, "_cart_quote_tier_{$i}_tier_name", true) ?: '',
-                    'monthly_price' => (float) get_post_meta($product_id, "_cart_quote_tier_{$i}_monthly_price", true) ?: 0.0,
-                    'hourly_price'  => (float) get_post_meta($product_id, "_cart_quote_tier_{$i}_hourly_price", true) ?: 0.0,
-                    'is_active'     => (bool) get_post_meta($product_id, "_cart_quote_tier_{$i}_is_active", true),
-                ];
-            }
-
-            return $tiers;
+            return $tiers ?: [];
 
         } catch (\Exception $e) {
             Debug_Logger::get_instance()->error(
@@ -66,19 +52,32 @@ class Tier_Service
 
     public static function get_tier_by_product(int $product_id): ?array
     {
+        global $wpdb;
+
         if ($product_id <= 0) {
             return null;
         }
 
-        $tiers = self::get_all_tiers_by_product($product_id);
+        try {
+            $table = $wpdb->prefix . self::$table_name;
 
-        foreach ($tiers as $tier) {
-            if ($tier['is_active']) {
-                return $tier;
-            }
+            $tier = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM `{$table}` WHERE product_id = %d ORDER BY `tier_level` ASC LIMIT 1",
+                $product_id
+            ), ARRAY_A);
+
+            return $tier ?: null;
+
+        } catch (\Exception $e) {
+            Debug_Logger::get_instance()->error(
+                'Failed to get tier for product',
+                [
+                    'product_id' => $product_id,
+                    'error'      => $e->getMessage(),
+                ]
+            );
+            return null;
         }
-
-        return null;
     }
 
     public static function get_tier_data_for_cart(int $product_id): ?array
@@ -102,8 +101,8 @@ class Tier_Service
                 'description'   => $first_tier['description'] ?? '',
                 'tier_name'     => $first_tier['tier_name'] ?? '',
                 'tier_level'    => $first_tier['tier_level'] ?? '',
-                'monthly_price' => $first_tier['monthly_price'] ?? 0.0,
-                'hourly_price'  => $first_tier['hourly_price'] ?? 0.0,
+                'monthly_price' => (float) ($first_tier['monthly_price'] ?? 0),
+                'hourly_price'  => (float) ($first_tier['hourly_price'] ?? 0),
                 '_all_tiers'    => $all_tiers,
             ];
 
@@ -125,30 +124,30 @@ class Tier_Service
 
     public static function save_tiers(int $product_id, array $tiers): bool
     {
+        global $wpdb;
+
         if ($product_id <= 0) {
             return false;
         }
 
         try {
-            for ($i = 1; $i <= self::MAX_TIERS; $i++) {
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_level");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_description");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_tier_name");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_monthly_price");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_hourly_price");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_is_active");
-            }
+            $table = $wpdb->prefix . self::$table_name;
 
-            foreach ($tiers as $index => $tier) {
-                $i = $index + 1;
+            $wpdb->query($wpdb->prepare(
+                "DELETE FROM `{$table}` WHERE product_id = %d",
+                $product_id
+            ));
 
+            foreach ($tiers as $tier) {
                 if (!empty($tier['level'])) {
-                    update_post_meta($product_id, "_cart_quote_tier_{$i}_level", (int) $tier['level']);
-                    update_post_meta($product_id, "_cart_quote_tier_{$i}_description", sanitize_text_field($tier['description'] ?? ''));
-                    update_post_meta($product_id, "_cart_quote_tier_{$i}_tier_name", sanitize_text_field($tier['tier_name'] ?? ''));
-                    update_post_meta($product_id, "_cart_quote_tier_{$i}_monthly_price", (float) ($tier['monthly_price'] ?? 0));
-                    update_post_meta($product_id, "_cart_quote_tier_{$i}_hourly_price", (float) ($tier['hourly_price'] ?? 0));
-                    update_post_meta($product_id, "_cart_quote_tier_{$i}_is_active", !empty($tier['is_active']) ? 1 : 0);
+                    $wpdb->insert($table, [
+                        'product_id'    => $product_id,
+                        'tier_level'    => (int) $tier['level'],
+                        'description'   => sanitize_text_field($tier['description'] ?? ''),
+                        'tier_name'     => sanitize_text_field($tier['tier_name'] ?? ''),
+                        'monthly_price' => (float) ($tier['monthly_price'] ?? 0),
+                        'hourly_price'  => (float) ($tier['hourly_price'] ?? 0),
+                    ]);
                 }
             }
 
@@ -168,19 +167,19 @@ class Tier_Service
 
     public static function delete_all_tiers(int $product_id): bool
     {
+        global $wpdb;
+
         if ($product_id <= 0) {
             return false;
         }
 
         try {
-            for ($i = 1; $i <= self::MAX_TIERS; $i++) {
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_level");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_description");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_tier_name");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_monthly_price");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_hourly_price");
-                delete_post_meta($product_id, "_cart_quote_tier_{$i}_is_active");
-            }
+            $table = $wpdb->prefix . self::$table_name;
+
+            $wpdb->query($wpdb->prepare(
+                "DELETE FROM `{$table}` WHERE product_id = %d",
+                $product_id
+            ));
 
             return true;
 
@@ -215,12 +214,11 @@ class Tier_Service
         if (!empty($all_tiers)) {
             foreach ($all_tiers as $i => $tier) {
                 error_log('  Tier [' . $i . ']:');
-                error_log('    tier_level: ' . $tier['tier_level']);
-                error_log('    description: ' . $tier['description']);
-                error_log('    tier_name: ' . $tier['tier_name']);
-                error_log('    monthly_price: ' . $tier['monthly_price']);
-                error_log('    hourly_price: ' . $tier['hourly_price']);
-                error_log('    is_active: ' . ($tier['is_active'] ? 'true' : 'false'));
+                error_log('    tier_level: ' . ($tier['tier_level'] ?? 'N/A'));
+                error_log('    description: ' . ($tier['description'] ?? 'N/A'));
+                error_log('    tier_name: ' . ($tier['tier_name'] ?? 'N/A'));
+                error_log('    monthly_price: ' . ($tier['monthly_price'] ?? 'N/A'));
+                error_log('    hourly_price: ' . ($tier['hourly_price'] ?? 'N/A'));
             }
         } else {
             error_log('  WARNING: No tiers found for this product!');

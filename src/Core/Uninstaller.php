@@ -44,6 +44,7 @@ class Uninstaller
         $tables = [
             $wpdb->prefix . CART_QUOTE_WC_TABLE_SUBMISSIONS,
             $wpdb->prefix . 'cart_quote_logs',
+            $wpdb->prefix . 'welp_product_tiers',
         ];
 
         foreach ($tables as $table) {

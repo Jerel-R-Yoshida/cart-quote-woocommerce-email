@@ -28,11 +28,6 @@
         addTier: function(e) {
             e.preventDefault();
 
-            if (this.getTierCount() >= cartQuoteTier.maxTiers) {
-                alert('Maximum number of tiers (' + cartQuoteTier.maxTiers + ') reached.');
-                return;
-            }
-
             this.noTiersMessage.remove();
 
             var index = this.getNextIndex();
