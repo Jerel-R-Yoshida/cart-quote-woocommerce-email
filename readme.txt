@@ -4,7 +4,7 @@ Tags: woocommerce, quote, cart, email, google calendar, elementor
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.14
+Stable tag: 1.0.57
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,11 @@ Yes. Google OAuth tokens are encrypted before storage. All database queries use 
 6. Elementor widgets
 
 == Changelog ==
+
+= 1.0.57 =
+* **Fixed**: Mini-cart now correctly displays selected tier level from WCGM marketplace
+* **Fixed**: Tier detection now checks multiple field names for cross-plugin compatibility (selected_tier, tier_level, welp_selected_tier, tier)
+* **Improved**: add_tier_data_to_cart() now supports WCGM's field naming conventions
 
 = 1.0.10 =
 * 🚀 Performance optimizations:

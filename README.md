@@ -1,6 +1,6 @@
 # Cart Quote WooCommerce & Email
 
-[![Version](https://img.shields.io/badge/version-1.0.56-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email)
+[![Version](https://img.shields.io/badge/version-1.0.57-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email)
 [![WordPress](https://img.shields.io/badge/WordPress-%3E%3D5.8-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-%3E%3D6.0-purple.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-%3E%3D7.4-777bb4.svg)](https://php.net/)
@@ -324,6 +324,11 @@ cart-quote-woocommerce-email/
 ```
 
 ## Changelog
+
+### 1.0.57
+- Fixed: Mini-cart now correctly displays selected tier level from WCGM marketplace
+- Fixed: Tier detection checks multiple field names (selected_tier, tier_level, welp_selected_tier, tier)
+- Improved: Cross-plugin compatibility with WCGM's field naming conventions
 
 ### 1.0.56
 - Debug: Added visible data dump to Elementor mini-cart widget dropdown

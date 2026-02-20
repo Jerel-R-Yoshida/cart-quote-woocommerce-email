@@ -556,9 +556,18 @@ final class Plugin
      */
     public function add_tier_data_to_cart($cart_item_data, $product_id)
     {
-        $selected_tier = isset($_REQUEST['tier']) 
-            ? (int) $_REQUEST['tier'] 
-            : 1;
+        // Check multiple field names for compatibility with WCGM and other plugins
+        $selected_tier = 1; // default
+
+        if (isset($_REQUEST['selected_tier'])) {
+            $selected_tier = (int) $_REQUEST['selected_tier'];
+        } elseif (isset($_REQUEST['tier_level'])) {
+            $selected_tier = (int) $_REQUEST['tier_level'];
+        } elseif (isset($_REQUEST['welp_selected_tier'])) {
+            $selected_tier = (int) $_REQUEST['welp_selected_tier'];
+        } elseif (isset($_REQUEST['tier'])) {
+            $selected_tier = (int) $_REQUEST['tier'];
+        }
 
         $tier = \CartQuoteWooCommerce\Services\Tier_Service::get_tier_by_level(
             $product_id,
