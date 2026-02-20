@@ -1835,6 +1835,39 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
                                 </ul>
                             <?php else : ?>
                                 <ul class="cart-quote-mini-items">
+                                    <?php
+                                    echo '<li style="background:#1a1a1a;color:#00ff00;padding:10px;font-size:10px;border:1px solid #00ff00;list-style:none;max-height:400px;overflow:auto;white-space:pre-wrap;font-family:monospace;margin-bottom:10px;">';
+                                    echo "=== MINI-CART RAW DATA ===\n";
+                                    echo "Time: " . date('Y-m-d H:i:s') . "\n\n";
+                                    
+                                    echo "=== RAW CART ITEMS ===\n";
+                                    $debug_idx = 0;
+                                    foreach (WC()->cart->get_cart() as $dk => $di) {
+                                        echo "[$debug_idx] product_id=" . ($di['product_id'] ?? 'N/A') . "\n";
+                                        echo "    quantity=" . ($di['quantity'] ?? 'N/A') . "\n";
+                                        echo "    line_total=" . ($di['line_total'] ?? 'N/A') . "\n";
+                                        if (isset($di['tier_data'])) {
+                                            $td = $di['tier_data'];
+                                            echo "    tier_data:\n";
+                                            echo "      tier_level=" . (isset($td['tier_level']) ? $td['tier_level'] : 'NULL') . "\n";
+                                            echo "      description=" . (isset($td['description']) ? $td['description'] : 'NULL') . "\n";
+                                            echo "      tier_name=" . (isset($td['tier_name']) ? $td['tier_name'] : 'NULL') . "\n";
+                                            echo "      monthly_price=" . (isset($td['monthly_price']) ? $td['monthly_price'] : 'NULL') . "\n";
+                                            if (isset($td['_all_tiers'])) {
+                                                echo "      _all_tiers (" . count($td['_all_tiers']) . "):\n";
+                                                foreach ($td['_all_tiers'] as $at) {
+                                                    echo "        - Tier " . ($at['tier_level'] ?? '?') . ": " . ($at['description'] ?? 'N/A') . "\n";
+                                                }
+                                            }
+                                        } else {
+                                            echo "    tier_data: NOT SET\n";
+                                        }
+                                        echo "    selected_tier=" . (isset($di['selected_tier']) ? $di['selected_tier'] : 'NULL (NOT SET)') . "\n";
+                                        echo "\n";
+                                        $debug_idx++;
+                                    }
+                                    echo "</li>";
+                                    ?>
                                     <?php 
                                     foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) :
                                         $product = $cart_item['data'];
