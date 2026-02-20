@@ -40,7 +40,7 @@ final class Plugin
      *
      * @var string
      */
-    private $version = '1.0.39';
+    private $version = '1.0.40';
 
     /**
      * Get singleton instance
