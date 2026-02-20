@@ -36,21 +36,30 @@ $is_empty = WC()->cart->is_empty();
             <div class="cart-quote-mini-dropdown">
                 <ul class="cart-quote-mini-items">
                     <?php foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) : ?>
-                        <?php $product = $cart_item['data']; ?>
-                        <?php $tier_level = isset($cart_item['tier_level']) ? $cart_item['tier_level'] : ''; ?>
+                        <?php 
+                        $product = $cart_item['data']; 
+                        $tier_data = isset($cart_item['tier_data']) ? $cart_item['tier_data'] : null;
+                        ?>
                         <li class="cart-quote-mini-item">
-                            <span class="item-name">
-                                <?php echo esc_html($product->get_name()); ?>
-                                <span class="item-qty">x<?php echo esc_html($cart_item['quantity']); ?></span>
-                            </span>
-                            <?php if ($tier_level) : ?>
-                                <span>
-                                    <span class="item-tier-level">tier <?php echo esc_html($tier_level); ?></span>
+                            <div class="item-header">
+                                <span class="item-name">
+                                    <?php echo esc_html($product->get_name()); ?>
                                 </span>
+                                <span class="item-price">
+                                    <?php echo wc_price($cart_item['line_total']); ?>
+                                </span>
+                            </div>
+                            <?php if ($tier_data && !empty($tier_data['description'])) : ?>
+                                <div class="item-tier-badge">
+                                    <span class="tier-desc">
+                                        <?php echo esc_html($tier_data['description']); ?>
+                                        <span class="tier-qty">x<?php echo esc_html($cart_item['quantity']); ?></span>
+                                    </span>
+                                    <span class="tier-price">
+                                        <?php echo wc_price($cart_item['line_total']); ?>
+                                    </span>
+                                </div>
                             <?php endif; ?>
-                            <span class="item-price">
-                                <?php echo wc_price($cart_item['line_total']); ?>
-                            </span>
                         </li>
                     <?php endforeach; ?>
                 </ul>

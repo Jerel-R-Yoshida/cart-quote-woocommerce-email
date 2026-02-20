@@ -262,7 +262,7 @@ class Frontend_Manager
         foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
             $product = $cart_item['data'];
             
-            $tier_level = isset($cart_item['tier_level']) ? $cart_item['tier_level'] : '';
+            $tier_data = isset($cart_item['tier_data']) ? $cart_item['tier_data'] : null;
             
             $cart_items[] = [
                 'key' => $cart_item_key,
@@ -274,7 +274,7 @@ class Frontend_Manager
                 'price' => $product->get_price_html(),
                 'line_total' => wc_price($cart_item['line_total']),
                 'line_total_raw' => $cart_item['line_total'],
-                'tier_level' => $tier_level,
+                'tier_data' => $tier_data,
             ];
         }
 

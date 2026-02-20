@@ -584,17 +584,24 @@ function isValidEmail(email) {
                                     
                                      response.data.items.forEach(function(item) {
                                         var $item = $('<li class="cart-quote-mini-item"></li>');
-                                        var tierLevelHtml = '';
                                         
-                                        if (item.tier_level) {
-                                            tierLevelHtml = '<span><span class="item-tier-level">tier ' + item.tier_level + '</span></span>';
+                                        var tierBadgeHtml = '';
+                                        if (item.tier_data && item.tier_data.description) {
+                                            tierBadgeHtml = '<div class="item-tier-badge">' +
+                                                '<span class="tier-desc">' +
+                                                    item.tier_data.description +
+                                                    '<span class="tier-qty">x' + item.quantity + '</span>' +
+                                                '</span>' +
+                                                '<span class="tier-price">' + item.line_total + '</span>' +
+                                            '</div>';
                                         }
                                         
                                         $item.html(
-                                            '<span class="item-name">' + item.product_name + 
-                                            '<span class="item-qty">x' + item.quantity + '</span></span>' +
-                                            tierLevelHtml +
-                                            '<span class="item-price">' + item.line_total + '</span>'
+                                            '<div class="item-header">' +
+                                                '<span class="item-name">' + item.product_name + '</span>' +
+                                                '<span class="item-price">' + item.line_total + '</span>' +
+                                            '</div>' +
+                                            tierBadgeHtml
                                         );
                                         $itemsList.append($item);
                                     });

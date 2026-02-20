@@ -165,6 +165,20 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
             ]
         );
 
+        $this->add_control(
+            'show_tier_badge',
+            [
+                'label' => __('Show Tier Badge', 'cart-quote-woocommerce-email'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'cart-quote-woocommerce-email'),
+                'label_off' => __('No', 'cart-quote-woocommerce-email'),
+                'default' => 'yes',
+                'condition' => [
+                    'show_items_list' => 'yes',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
 
         // Icon Style Section
@@ -1824,15 +1838,28 @@ class Mini_Cart_Widget extends \Elementor\Widget_Base
                                     <?php 
                                     foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) :
                                         $product = $cart_item['data'];
+                                        $tier_data = isset($cart_item['tier_data']) ? $cart_item['tier_data'] : null;
                                     ?>
                                         <li class="cart-quote-mini-item">
-                                            <span class="item-name">
-                                                <?php echo esc_html($product->get_name()); ?>
-                                                <span class="item-qty">x<?php echo esc_html($cart_item['quantity']); ?></span>
-                                            </span>
-                                            <span class="item-price">
-                                                <?php echo wc_price($cart_item['line_total']); ?>
-                                            </span>
+                                            <div class="item-header">
+                                                <span class="item-name">
+                                                    <?php echo esc_html($product->get_name()); ?>
+                                                </span>
+                                                <span class="item-price">
+                                                    <?php echo wc_price($cart_item['line_total']); ?>
+                                                </span>
+                                            </div>
+                                            <?php if ($tier_data && !empty($tier_data['description']) && $settings['show_tier_badge'] === 'yes') : ?>
+                                                <div class="item-tier-badge">
+                                                    <span class="tier-desc">
+                                                        <?php echo esc_html($tier_data['description']); ?>
+                                                        <span class="tier-qty">x<?php echo esc_html($cart_item['quantity']); ?></span>
+                                                    </span>
+                                                    <span class="tier-price">
+                                                        <?php echo wc_price($cart_item['line_total']); ?>
+                                                    </span>
+                                                </div>
+                                            <?php endif; ?>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>

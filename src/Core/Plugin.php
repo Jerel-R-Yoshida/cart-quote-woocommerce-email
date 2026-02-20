@@ -154,6 +154,10 @@ final class Plugin
         add_action('wp_ajax_cart_quote_google_oauth_callback', [$this, 'handle_google_oauth_callback']);
         add_action('wp_ajax_cart_quote_google_disconnect', [$this, 'handle_google_disconnect']);
 
+        // WooCommerce hooks for tier data
+        add_filter('woocommerce_add_cart_item_data', [$this, 'add_tier_data_to_cart'], 10, 2);
+        add_filter('woocommerce_get_cart_item_from_session', [$this, 'get_cart_item_from_session'], 10, 2);
+
         // Body class
         add_filter('body_class', [$this, 'add_body_class']);
 
@@ -540,6 +544,40 @@ final class Plugin
         if ($google) {
             $google->handle_disconnect();
         }
+    }
+
+    /**
+     * Add tier data to cart item when adding to cart
+     *
+     * @param array $cart_item_data Cart item data
+     * @param int   $product_id     Product ID
+     * @return array
+     */
+    public function add_tier_data_to_cart($cart_item_data, $product_id)
+    {
+        $tier_data = \CartQuoteWooCommerce\Services\Tier_Service::get_tier_data_for_cart($product_id);
+        
+        if ($tier_data) {
+            $cart_item_data['tier_data'] = $tier_data;
+        }
+        
+        return $cart_item_data;
+    }
+
+    /**
+     * Restore tier data from session
+     *
+     * @param array $cart_item Cart item
+     * @param array $values    Session values
+     * @return array
+     */
+    public function get_cart_item_from_session($cart_item, $values)
+    {
+        if (isset($values['tier_data'])) {
+            $cart_item['tier_data'] = $values['tier_data'];
+        }
+        
+        return $cart_item;
     }
 
     /**

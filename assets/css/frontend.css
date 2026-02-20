@@ -235,21 +235,26 @@
 }
 
 .cart-quote-mini-item {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
-    align-items: center;
+    gap: 6px;
 }
 
 .cart-quote-mini-item:last-child {
     border-bottom: none;
 }
 
+.cart-quote-mini-item .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .cart-quote-mini-item .item-name {
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 500;
     color: #333;
 }
 
@@ -259,21 +264,46 @@
     font-size: 14px;
 }
 
-.cart-quote-mini-item .item-tier-level {
-    color: #0073aa;
+.cart-quote-mini-item .item-header .item-price {
     font-weight: 600;
-    font-size: 13px;
-    margin-left: 8px;
+    color: #333;
+    text-align: right;
 }
 
-.cart-quote-mini-item .item-tier-level span {
-    color: #0073aa;
+/* Tier Badge - Pill Style with Price */
+.cart-quote-mini-item .item-tier-badge {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 16px;
+    font-size: 12px;
+    border: 1px solid #90caf9;
+    gap: 12px;
+}
+
+.cart-quote-mini-item .tier-desc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #1565c0;
+    font-weight: 500;
+}
+
+.cart-quote-mini-item .tier-qty {
+    color: #1976d2;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+.cart-quote-mini-item .tier-price {
+    color: #0d47a1;
     font-weight: 700;
-}
-
-.cart-quote-mini-item .item-tier-level:first-child {
-    font-weight: 400;
-    color: #666;
+    margin-left: auto;
+    white-space: nowrap;
 }
 
 .cart-quote-mini-item .item-price {
