@@ -501,4 +501,138 @@ function isValidEmail(email) {
 
     });
 
+    /**
+     * Global API: Refresh mini-cart data
+     * Can be called by third-party plugins after cart modifications
+     * 
+     * @param {Object} options - Optional configuration
+     * @param {boolean} options.full - Force full refresh including dropdown items (default: true)
+     * @param {boolean} options.animated - Show animation during refresh (default: false)
+     * @param {Function} options.onSuccess - Callback after successful refresh
+     * @param {Function} options.onError - Callback on error
+     * 
+     * @example
+     * // Basic usage
+     * window.cartQuoteRefreshMiniCart();
+     * 
+     * // With options
+     * window.cartQuoteRefreshMiniCart({
+     *     full: false,  // Update only count/subtotal
+     *     animated: true,
+     *     onSuccess: function() { console.log('Cart refreshed!'); }
+     * });
+     */
+    window.cartQuoteRefreshMiniCart = function(options) {
+        options = options || {};
+        var fullRefresh = options.full !== undefined ? options.full : true;
+        var animated = options.animated || false;
+        
+        if (typeof cartQuoteFrontend === 'undefined') {
+            throw new Error('Cart Quote: cartQuoteFrontend is not defined. Ensure the plugin scripts are properly loaded.');
+        }
+        
+        // Loading state
+        if (animated) {
+            $('.cart-quote-mini-cart').addClass('refreshing');
+        }
+        
+        $.ajax({
+            url: cartQuoteFrontend.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'cart_quote_get_cart',
+                nonce: cartQuoteFrontend.nonce
+            },
+            success: function(response) {
+                if (response.success && response.data) {
+                    // Update all mini-cart instances on page
+                    $('.cart-quote-mini-cart-container').each(function() {
+                        var $container = $(this);
+                        var $cart = $container.find('.cart-quote-mini-cart');
+                        var $toggle = $cart.find('.cart-quote-mini-toggle');
+                        var $dropdown = $cart.find('.cart-quote-mini-dropdown');
+                        
+                        // Update count badge
+                        var $count = $toggle.find('.cart-quote-mini-count');
+                        if ($count.length) {
+                            $count.text(response.data.count);
+                            if (response.data.count > 0) {
+                                $count.removeClass('cart-empty');
+                            } else {
+                                $count.addClass('cart-empty');
+                            }
+                        }
+                        
+                        // Update subtotal in toggle
+                        var $toggleSubtotal = $toggle.find('.cart-quote-mini-subtotal');
+                        if ($toggleSubtotal.length) {
+                            $toggleSubtotal.html(response.data.formatted_subtotal);
+                        }
+                        
+                        // Full refresh: update dropdown items and total
+                        if (fullRefresh) {
+                            if (response.data.is_empty) {
+                                // Show empty cart message
+                                $dropdown.html('<p class="cart-quote-mini-empty">' + 
+                                    (cartQuoteFrontend.i18n && cartQuoteFrontend.i18n.emptyCart ? cartQuoteFrontend.i18n.emptyCart : 'Your cart is empty.') + 
+                                    '</p>');
+                            } else {
+                                // Rebuild items list
+                                var $itemsList = $dropdown.find('.cart-quote-mini-items');
+                                if ($itemsList.length) {
+                                    $itemsList.empty();
+                                    
+                                    response.data.items.forEach(function(item) {
+                                        var $item = $('<li class="cart-quote-mini-item"></li>');
+                                        $item.html(
+                                            '<span class="item-name">' + item.product_name + 
+                                            '<span class="item-qty">x' + item.quantity + '</span></span>' +
+                                            '<span class="item-price">' + item.line_total + '</span>'
+                                        );
+                                        $itemsList.append($item);
+                                    });
+                                }
+                                
+                                // Update subtotal in dropdown
+                                var $amount = $dropdown.find('.cart-quote-mini-total .subtotal-amount');
+                                if ($amount.length) {
+                                    $amount.html(response.data.formatted_subtotal);
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Remove loading state
+                    if (animated) {
+                        $('.cart-quote-mini-cart').removeClass('refreshing');
+                    }
+                    
+                    // Trigger custom event for other scripts
+                    $(document).trigger('cartQuoteMiniCartRefreshed', [response.data]);
+                    
+                    // Call success callback if provided
+                    if (typeof options.onSuccess === 'function') {
+                        options.onSuccess(response.data);
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Cart Quote Mini-Cart Refresh Failed:', error);
+                
+                // Remove loading state
+                if (animated) {
+                    $('.cart-quote-mini-cart').removeClass('refreshing');
+                }
+                
+                // Trigger error event
+                $(document).trigger('cartQuoteMiniCartRefreshError', [{xhr: xhr, status: status, error: error}]);
+                
+                // Call error callback if provided
+                if (typeof options.onError === 'function') {
+                    options.onError({xhr: xhr, status: status, error: error});
+                }
+            }
+        });
+    };
+
 })(jQuery);

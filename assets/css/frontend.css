@@ -212,7 +212,7 @@
     position: absolute;
     top: 100%;
     right: 0;
-    width: 300px;
+    width: 320px;
     background: #fff;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
@@ -235,10 +235,12 @@
 }
 
 .cart-quote-mini-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 10px 0;
     border-bottom: 1px solid #eee;
+    align-items: center;
 }
 
 .cart-quote-mini-item:last-child {
@@ -246,17 +248,21 @@
 }
 
 .cart-quote-mini-item .item-name {
-    flex: 1;
     font-size: 14px;
+    font-weight: normal;
+    color: #333;
 }
 
 .cart-quote-mini-item .item-qty {
     color: #999;
     margin-left: 5px;
+    font-size: 14px;
 }
 
 .cart-quote-mini-item .item-price {
     font-weight: 600;
+    text-align: right;
+    color: #333;
 }
 
 .cart-quote-mini-empty {
@@ -266,11 +272,49 @@
 }
 
 .cart-quote-mini-total {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 15px 0;
     border-top: 2px solid #eee;
     margin-bottom: 15px;
+}
+
+.cart-quote-mini-total strong {
+    font-weight: 600;
+    color: #666;
+}
+
+.cart-quote-mini-total .subtotal-amount {
+    text-align: right;
+    font-weight: 700;
+    font-size: 16px;
+    color: #0073aa;
+}
+
+/* Mini-Cart Refresh Animation */
+.cart-quote-mini-cart.refreshing {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.cart-quote-mini-cart.refreshing .dashicons-cart {
+    animation: cartQuoteSpin 1s linear infinite;
+}
+
+.cart-quote-mini-cart.refreshing i {
+    animation: cartQuoteSpin 1s linear infinite;
+}
+
+.cart-quote-mini-cart.refreshing svg {
+    animation: cartQuoteSpin 1s linear infinite;
+}
+
+@keyframes cartQuoteSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .cart-quote-mini-actions {

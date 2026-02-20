@@ -1,6 +1,6 @@
 # Cart Quote WooCommerce & Email
 
-[![Version](https://img.shields.io/badge/version-1.0.32-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email)
+[![Version](https://img.shields.io/badge/version-1.0.36-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email)
 [![WordPress](https://img.shields.io/badge/WordPress-%3E%3D5.8-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-%3E%3D6.0-purple.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-%3E%3D7.4-777bb4.svg)](https://php.net/)
@@ -144,6 +144,114 @@ Navigate to **Cart Quotes > All Quotes** to:
 | Closed | Quote resolved (accepted or declined) |
 | Canceled | Quote canceled by customer or admin |
 
+## Mini-Cart Refresh API
+
+The plugin provides a public JavaScript API to refresh mini-cart data after cart modifications. This allows third-party plugins to update the mini-cart when they add/remove items programmatically.
+
+### Basic Usage
+
+```javascript
+// Refresh mini-cart with default options
+window.cartQuoteRefreshMiniCart();
+```
+
+### Advanced Usage
+
+```javascript
+window.cartQuoteRefreshMiniCart({
+    full: false,           // Update only count/subtotal (faster)
+    animated: true,        // Show loading animation
+    onSuccess: function(data) {
+        console.log('Cart refreshed! Items:', data.count);
+    },
+    onError: function(error) {
+        console.error('Refresh failed:', error);
+    }
+});
+```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `full` | boolean | `true` | Refresh dropdown items (set to `false` for count/subtotal only) |
+| `animated` | boolean | `false` | Show loading animation during refresh |
+| `onSuccess` | function | `null` | Callback after successful refresh (receives cart data) |
+| `onError` | function | `null` | Callback on error (receives error object) |
+
+### Success Callback Data
+
+```javascript
+{
+    items: [...],           // Array of cart items
+    count: 3,              // Total item count
+    subtotal: "$347.00",   // Formatted subtotal
+    is_empty: false,        // Cart empty status
+    formatted_subtotal: "$347.00"
+}
+```
+
+### Event-Based Updates (Alternative)
+
+If your plugin prefers event-driven updates, listen for custom events:
+
+```javascript
+// Listen for refresh completion
+$(document).on('cartQuoteMiniCartRefreshed', function(event, cartData) {
+    console.log('Mini-cart refreshed with:', cartData);
+});
+
+// Listen for refresh errors
+$(document).on('cartQuoteMiniCartRefreshError', function(event, errorData) {
+    console.error('Refresh failed:', errorData);
+});
+```
+
+### Example: Third-Party Plugin Integration
+
+```javascript
+// Example: Custom add-to-cart plugin
+function addProductToCart(productId, quantity) {
+    // Your custom AJAX to add product
+    $.post('/wp-admin/admin-ajax.php', {
+        action: 'my_plugin_add_to_cart',
+        product_id: productId,
+        quantity: quantity
+    }, function() {
+        // Refresh mini-cart after successful add
+        window.cartQuoteRefreshMiniCart({
+            animated: true,
+            onSuccess: function(data) {
+                console.log('Added product. Cart now has ' + data.count + ' items.');
+            }
+        });
+    });
+}
+```
+
+### Example: Custom Quick-Add Buttons
+
+```html
+<button onclick="quickAddToCart(123)">Quick Add to Cart</button>
+
+<script>
+function quickAddToCart(productId) {
+    $.ajax({
+        url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add-to-cart'),
+        type: 'POST',
+        data: {
+            product_id: productId,
+            quantity: 1
+        },
+        success: function() {
+            // Refresh mini-cart
+            window.cartQuoteRefreshMiniCart({ animated: true });
+        }
+    });
+}
+</script>
+```
+
 ## Developer Hooks
 
 ### Actions
@@ -216,6 +324,19 @@ cart-quote-woocommerce-email/
 ```
 
 ## Changelog
+
+### 1.0.36
+- New: Public Mini-Cart Refresh API for third-party plugin integration
+- Added `window.cartQuoteRefreshMiniCart()` global JavaScript function
+- Added custom events: `cartQuoteMiniCartRefreshed`, `cartQuoteMiniCartRefreshError`
+- Added CSS animation for refreshing state (1s spin animation)
+- Full API documentation in README.md
+
+### 1.0.35
+- Mini Cart Enhancement: Added Icon Text Style section for subtotal styling
+- Added Dropdown Item Style section with item name, quantity, price, separator controls
+- Added Subtotal Style section with label, amount, separator line controls
+- Updated dropdown layout to CSS Grid for cleaner alignment
 
 ### 1.0.32
 - Version sync and documentation updates

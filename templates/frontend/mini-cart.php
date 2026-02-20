@@ -51,7 +51,7 @@ $is_empty = WC()->cart->is_empty();
 
                 <div class="cart-quote-mini-total">
                     <strong><?php esc_html_e('Subtotal:', 'cart-quote-woocommerce-email'); ?></strong>
-                    <?php echo wp_kses_post($cart_subtotal); ?>
+                    <span class="subtotal-amount"><?php echo wp_kses_post($cart_subtotal); ?></span>
                 </div>
 
                 <div class="cart-quote-mini-actions">
