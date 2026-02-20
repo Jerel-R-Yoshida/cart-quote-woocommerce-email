@@ -1,6 +1,6 @@
 # Cart Quote WooCommerce & Email
 
-[![Version](https://img.shields.io/badge/version-1.0.55-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email)
+[![Version](https://img.shields.io/badge/version-1.0.56-blue.svg)](https://github.com/jerelryoshida-dot/cart-quote-woocommerce-email)
 [![WordPress](https://img.shields.io/badge/WordPress-%3E%3D5.8-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-%3E%3D6.0-purple.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-%3E%3D7.4-777bb4.svg)](https://php.net/)
@@ -324,6 +324,11 @@ cart-quote-woocommerce-email/
 ```
 
 ## Changelog
+
+### 1.0.56
+- Debug: Added visible data dump to Elementor mini-cart widget dropdown
+- Previous debug (v1.0.55) only worked in shortcode template, not Elementor widget
+- Shows: product_id, tier_data, selected_tier, _all_tiers in green on black
 
 ### 1.0.55
 - Debug: Added visible data dump directly to mini-cart dropdown
