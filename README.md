@@ -325,6 +325,12 @@ cart-quote-woocommerce-email/
 
 ## Changelog
 
+### 1.0.53
+- Debug Panel: Added plain text debug output to mini-cart
+- Shows all cart data as plain text when ?debug_mini_cart=1 is added to URL
+- Displays raw cart items, tier data, grouped items, virtual parent items
+- Traces data flow through each step with detailed output
+
 ### 1.0.52
 - Bug fix: Restored selected_tier from session in get_cart_item_from_session()
 - Fixed mini-cart always showing tier 1 instead of selected tier
