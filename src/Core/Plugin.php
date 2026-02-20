@@ -40,7 +40,7 @@ final class Plugin
      *
      * @var string
      */
-    private $version = '1.0.51';
+    private $version = '1.0.52';
 
     /**
      * Get singleton instance
@@ -594,7 +594,10 @@ final class Plugin
         if (isset($values['tier_data'])) {
             $cart_item['tier_data'] = $values['tier_data'];
         }
-        
+        if (isset($values['selected_tier'])) {
+            $cart_item['selected_tier'] = $values['selected_tier'];
+        }
+
         return $cart_item;
     }
 
